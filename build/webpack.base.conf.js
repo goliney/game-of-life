@@ -7,6 +7,8 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+console.log(resolve('/src/assets/scss/'));
+
 module.exports = {
   entry: {
     app: './src/main.js'
@@ -22,7 +24,8 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src')
+      '@': resolve('src'),
+      'assets': resolve('src/assets/')
     }
   },
   module: {

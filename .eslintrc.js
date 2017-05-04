@@ -14,6 +14,9 @@ module.exports = {
   plugins: [
     'html'
   ],
+  globals: {
+    'svgPanZoom': true
+  },
   // check if imports actually resolve
   'settings': {
     'import/resolver': {
@@ -33,6 +36,10 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
     }],
+    'class-methods-use-this': 0,
+    'no-param-reassign': 0,
+    // allow console.log
+    'no-console': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }

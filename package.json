@@ -1,5 +1,5 @@
 {
-  "name": "dev-challenge-11",
+  "name": "game-of-life",
   "version": "1.0.0",
   "description": "Conway's Game of Life",
   "author": "",
@@ -13,7 +13,8 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "vue": "^2.2.6"
+    "vue": "^2.2.6",
+    "vuex": "^2.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

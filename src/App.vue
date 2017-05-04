@@ -1,28 +1,41 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <control-panel></control-panel>
+    <field></field>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello';
+import ControlPanel from './components/control-panel/ControlPanel';
+import Field from './components/field/Field';
 
 export default {
   name: 'app',
   components: {
-    Hello,
+    ControlPanel,
+    Field,
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '~assets/scss/global';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 #app {
+  display: flex;
+  height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-size: 14px;
 }
 </style>
