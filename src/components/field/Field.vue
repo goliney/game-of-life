@@ -18,7 +18,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Cell from '../../store/Cell';
 
 export default {
   name: 'canvas-component',
@@ -36,6 +35,7 @@ export default {
       viewportSelector: '.svg-viewport',
       controlIconsEnabled: true,
       zoomEnabled: true,
+      dblClickZoomEnabled: false,
       fit: false,
       center: true,
     });
@@ -44,19 +44,21 @@ export default {
 //    this.field.resize();
   },
   computed: {
-    ...mapGetters(['population']),
+    ...mapGetters(['population', 'propagationInProgress']),
   },
   methods: {
     addCell(event) {
+      if (this.propagationInProgress) {
+        return;
+      }
       const zoom = this.field.getZoom();
       const pan = this.field.getPan();
       const x = Math.floor((event.clientX - this.fieldSize.left - pan.x) / (zoom * 10));
       const y = Math.floor((event.clientY - this.fieldSize.top - pan.y) / (zoom * 10));
-      const cell = new Cell(x, y);
-      this.$store.commit('add', cell);
+      this.$store.commit({ type: 'add', manual: true, x, y });
     },
     killCell(cell) {
-      this.$store.commit('kill', cell);
+      this.$store.commit({ type: 'kill', manual: true, cell });
     },
   },
 };
