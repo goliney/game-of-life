@@ -1,7 +1,6 @@
-const size = 10;
-
 class Cell {
   constructor(x, y) {
+    const size = 5;
     this.x = x;
     this.y = y;
     this.coordinates = Object.freeze({

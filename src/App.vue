@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <control-panel></control-panel>
+    <control></control>
     <field></field>
   </div>
 </template>
 
 <script>
-import ControlPanel from './components/control-panel/ControlPanel';
-import Field from './components/field/Field';
+import Control from './components/Control';
+import Field from './components/Field';
 
 export default {
   name: 'app',
   components: {
-    ControlPanel,
+    Control,
     Field,
   },
 };

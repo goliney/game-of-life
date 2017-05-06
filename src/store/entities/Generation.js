@@ -1,14 +1,9 @@
 import Vue from 'vue';
-
-const events = {
-  BIRTH: 'BIRTH',
-  DEATH: 'DEATH',
-  MANUAL_BIRTH: 'MANUAL_BIRTH',
-  MANUAL_DEATH: 'MANUAL_DEATH',
-};
+import { generationEvents } from '../types';
 
 class Generation {
-  constructor() {
+  constructor(count) {
+    this.count = count;
     this.diff = {};
   }
 
@@ -19,26 +14,26 @@ class Generation {
   addCell(cell, manual) {
     const entry = this.getEntry(cell);
     const key = cell.getKey();
-    if (manual && entry && entry.event === events.MANUAL_DEATH) {
+    if (manual && entry && entry.event === generationEvents.MANUAL_DEATH) {
       Vue.delete(this.diff, key);
       return;
     }
     Vue.set(this.diff, key, Object.freeze({
       cell,
-      event: manual ? events.MANUAL_BIRTH : events.BIRTH,
+      event: manual ? generationEvents.MANUAL_BIRTH : generationEvents.BIRTH,
     }));
   }
 
   killCell(cell, manual) {
     const entry = this.getEntry(cell);
     const key = cell.getKey();
-    if (manual && entry && entry.event === events.MANUAL_BIRTH) {
+    if (manual && entry && entry.event === generationEvents.MANUAL_BIRTH) {
       Vue.delete(this.diff, key);
       return;
     }
     Vue.set(this.diff, key, Object.freeze({
       cell,
-      event: manual ? events.MANUAL_DEATH : events.DEATH,
+      event: manual ? generationEvents.MANUAL_DEATH : generationEvents.DEATH,
     }));
   }
 }

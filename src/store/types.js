@@ -3,6 +3,9 @@ export const statuses = {
   PAUSE: 'PAUSE',
 };
 
-export const smth = {
-  smth: true,
+export const generationEvents = {
+  BIRTH: 'BIRTH',
+  DEATH: 'DEATH',
+  MANUAL_BIRTH: 'MANUAL_BIRTH',
+  MANUAL_DEATH: 'MANUAL_DEATH',
 };
