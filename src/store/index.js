@@ -19,8 +19,9 @@ const universe = new Vuex.Store({
     history: [],
     historySize: 100,
     snapshots: [],
-    activePattern: null,
     patterns,
+    selectedPattern: null,
+    isPatternDragged: false,
   },
 
   getters: {
@@ -40,6 +41,15 @@ const universe = new Vuex.Store({
     },
     updateInterval(state, { value }) {
       state.interval = value;
+    },
+    selectPattern(state, pattern) {
+      state.selectedPattern = pattern;
+    },
+    patternDragStart(state) {
+      state.isPatternDragged = true;
+    },
+    patternDragEnd(state) {
+      state.isPatternDragged = false;
     },
     addNewGeneration(state) {
       if (state.history.length >= state.historySize) {
@@ -176,6 +186,16 @@ const universe = new Vuex.Store({
       Object.keys(snapshot.population).forEach((key) => {
         const cell = snapshot.population[key];
         commit({ type: 'addCell', manual: true, cell });
+      });
+    },
+    addPattern({ commit }, { pattern, x, y }) {
+      pattern.cells.forEach((cell) => {
+        commit({
+          type: 'addCell',
+          x: cell.x + x,
+          y: cell.y + y,
+          manual: true,
+        });
       });
     },
   },

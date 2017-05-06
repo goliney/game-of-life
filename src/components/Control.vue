@@ -44,12 +44,15 @@
 
     <section>
       <span>Add pattern:</span>
-      <select>
-        <option value="1">Some pattern</option>
+      <select v-model="selectedPattern">
+        <option v-for="pattern in patterns" :value="pattern">
+          {{pattern.name}} ({{pattern.cells.length}})
+        </option>
       </select>
       <div
+        v-if="selectedPattern"
         class="drag-item"
-        :class="{ 'dragged': dragInProgress }"
+        :class="{ 'dragged': isPatternDragged }"
         draggable="true"
         @dragstart="dragstart"
         @dragend="dragend">
@@ -69,11 +72,6 @@ import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'control',
-  data() {
-    return {
-      dragInProgress: false,
-    };
-  },
   computed: {
     ...mapGetters([
       'islifePaused',
@@ -86,6 +84,8 @@ export default {
       historyLength: state => state.history.length,
       historySize: state => state.historySize,
       snapshots: state => state.snapshots,
+      patterns: state => state.patterns,
+      isPatternDragged: state => state.isPatternDragged,
     }),
     interval: {
       get() {
@@ -93,6 +93,14 @@ export default {
       },
       set(value) {
         this.$store.dispatch('updateInterval', value);
+      },
+    },
+    selectedPattern: {
+      get() {
+        return this.$store.state.selectedPattern;
+      },
+      set(pattern) {
+        this.$store.commit('selectPattern', pattern);
       },
     },
   },
@@ -110,12 +118,12 @@ export default {
       'restoreSnapshot',
     ]),
     dragstart(event) {
-      this.dragInProgress = true;
-      const dummyEl = document.createElement('span');
+      this.$store.commit('patternDragStart');
+      const dummyEl = document.createElement('span'); // do not show dragged element
       event.dataTransfer.setDragImage(dummyEl, 0, 0);
     },
     dragend() {
-      this.dragInProgress = false;
+      this.$store.commit('patternDragEnd');
     },
   },
 };

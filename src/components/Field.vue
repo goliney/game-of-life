@@ -21,15 +21,15 @@
         class="cell"
       />
 
-      <use :x="patternX" :y="patternY" xlink:href="#pattern"></use>
+      <use v-if="isPatternDragged" :x="patternX" :y="patternY" xlink:href="#pattern"></use>
     </g>
 
     <defs>
-      <g id="pattern" v-show="activePattern">
+      <g id="pattern" v-if="isPatternDragged">
         <rect
-          v-for="cell in activePattern.cells"
-          :x="cell.x"
-          :y="cell.x"
+          v-for="coordinate in selectedPattern.coordinates"
+          :x="coordinate.x"
+          :y="coordinate.y"
           width="5"
           height="5"
           class="cell"
@@ -69,7 +69,7 @@ export default {
       minZoom: 0.25,
       maxZoom: 10,
     });
-    this.mousedownXY = {};
+    this.mousedownXY = {};  // used to prevent click on pan
   },
   computed: {
     ...mapGetters([
@@ -78,7 +78,8 @@ export default {
     ]),
     ...mapState({
       population: state => state.population,
-      activePattern: state => state.activePattern,
+      selectedPattern: state => state.selectedPattern,
+      isPatternDragged: state => state.isPatternDragged,
     }),
   },
   methods: {
@@ -102,7 +103,7 @@ export default {
     },
     drop(event) {
       const { x, y } = this.getCoordinatesFromEvent(event);
-      return [x, y];
+      this.$store.dispatch({ type: 'addPattern', pattern: this.selectedPattern, x, y });
     },
     zoomIn() {
       this.field.zoomIn();
