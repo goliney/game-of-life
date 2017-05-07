@@ -8,6 +8,9 @@
     <section>
       <button @click="start()" v-if="islifePaused">Start</button>
       <button @click="stop()" v-if="islifeInProgress">Pause</button>
+      <br>
+      <button @click="randomize()">Randomize</button>
+      <button @click="reset()" :disabled="populationCount === 0">Reset Universe</button>
     </section>
 
     <section>
@@ -18,7 +21,7 @@
     <section>
       <button @click="stepForward()" :disabled="islifeInProgress">Step Forward</button>
       <button @click="stepBackward()" :disabled="islifeInProgress || !hasHistory">Step Backward</button>
-      <span>History Length: {{historyLength}} (max {{historySize}})</span>
+      <span>History: from {{firstGenerationInHistory}} to {{generationCount}}</span>
     </section>
 
     <section>
@@ -59,11 +62,6 @@
         Drag Me &rarr;
       </div>
     </section>
-
-    <section>
-      <button @click="randomize()">Randomize</button>
-      <button @click="reset()">Reset Universe</button>
-    </section>
   </aside>
 </template>
 
@@ -81,8 +79,7 @@ export default {
     ...mapState({
       generationCount: state => state.generationCount,
       hasHistory: state => state.history.length !== 0,
-      historyLength: state => state.history.length,
-      historySize: state => state.historySize,
+      firstGenerationInHistory: state => state.generationCount - state.history.length,
       snapshots: state => state.snapshots,
       patterns: state => state.patterns,
       isPatternDragged: state => state.isPatternDragged,
@@ -116,6 +113,7 @@ export default {
       'stepForward',
       'stepBackward',
       'restoreSnapshot',
+      'randomize',
     ]),
     dragstart(event) {
       this.$store.commit('patternDragStart');

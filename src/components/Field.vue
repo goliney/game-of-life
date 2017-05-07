@@ -39,7 +39,7 @@
   </svg>
   <section class="zoom-control">
     <button @click.stop="zoomIn()">+</button>
-    <button @click.stop="resetZoom()">Reset Zoom</button>
+    <button @click.stop="resetZoom()">Reset Zoom & Pan</button>
     <button @click.stop="zoomOut()">-</button>
   </section>
 </main>
@@ -47,6 +47,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import $bus from '../store/bus';
 
 const cellSize = 5;
 
@@ -70,6 +71,7 @@ export default {
       maxZoom: 10,
     });
     this.mousedownXY = {};  // used to prevent click on pan
+    $bus.$on('reset', this.resetZoom);
   },
   computed: {
     ...mapGetters([
@@ -97,11 +99,17 @@ export default {
       this.preventClick = deltaX > 0 || deltaY > 0;
     },
     dragover(event) {
+      if (!this.isPatternDragged) {
+        return;
+      }
       const { x, y } = this.getCoordinatesFromEvent(event);
       this.patternX = x * cellSize;
       this.patternY = y * cellSize;
     },
     drop(event) {
+      if (!this.isPatternDragged) {
+        return;
+      }
       const { x, y } = this.getCoordinatesFromEvent(event);
       this.$store.dispatch({ type: 'addPattern', pattern: this.selectedPattern, x, y });
     },

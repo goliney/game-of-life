@@ -5,14 +5,19 @@ import Cell from './entities/Cell';
 import Generation from './entities/Generation';
 import Snapshot from './entities/Snapshot';
 import { patterns } from './entities/Pattern';
+import $bus from './bus';
 
 Vue.use(Vuex);
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 const universe = new Vuex.Store({
   state: {
     status: statuses.PAUSE,
     loopId: null,
-    interval: 100,
+    interval: 500,
     population: {},
     generation: new Generation(0),
     generationCount: 0,
@@ -33,6 +38,7 @@ const universe = new Vuex.Store({
 
   mutations: {
     reset(state) {
+      $bus.$emit('reset');
       state.status = statuses.PAUSE;
       state.population = {};
       state.history = [];
@@ -197,6 +203,22 @@ const universe = new Vuex.Store({
           manual: true,
         });
       });
+    },
+    randomize({ commit, state, dispatch }) {
+      commit({ type: 'reset' });
+      const count = getRandomInt(30, 70);
+
+      for (let i = 0; i < count; i += 1) {
+        const pattern = state.patterns[getRandomInt(0, state.patterns.length)];
+        const x = getRandomInt(-100, 100);
+        const y = getRandomInt(-100, 100);
+        dispatch({
+          type: 'addPattern',
+          pattern,
+          x,
+          y,
+        });
+      }
     },
   },
 });

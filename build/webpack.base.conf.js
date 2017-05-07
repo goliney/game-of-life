@@ -7,8 +7,6 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-console.log(resolve('/src/assets/scss/'));
-
 module.exports = {
   entry: {
     app: './src/main.js'

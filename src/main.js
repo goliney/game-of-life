@@ -8,7 +8,7 @@ import universe from './store';
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-new Vue({
+export default new Vue({
   el: '#app',
   store: universe,
   template: '<App/>',
