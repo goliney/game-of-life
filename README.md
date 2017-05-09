@@ -1,6 +1,6 @@
 # Conway's Game of Life
 
-> JavaScript implementation of popular ["Game of Life"](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+> JavaScript implementation of ["Conway's Game of Life"](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
 ## Build Setup
 
